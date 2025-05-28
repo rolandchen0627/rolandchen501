@@ -4,11 +4,11 @@
 📊 陳信榮(Roland)| 數據分析作品集 | Data Analysis Portfolio
 
 
-這裡展示了我在日常工作與學習中所完成的分析專案與自動化工具，內容涵蓋資料清理、視覺化報表、ETL 流程、自動化派工、API 串接及爬蟲實作等。
+這裡展示了我在日常工作與所完成的分析專案與自動化工具，內容涵蓋資料清理、視覺化報表、ETL 流程、自動化派工、API 串接及爬蟲實作等。
 
 Welcome to my data analysis portfolio!
 
-This repository showcases my projects and tools related to data cleaning, reporting automation, ETL pipelines, API integrations, and web scraping — developed during both my professional work and personal learning.
+This repository showcases my projects and tools related to data cleaning, reporting automation, ETL pipelines, API integrations, and web scraping — developed during both my professional work.
 
 🔧  Tools & Technologies
 
