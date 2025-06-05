@@ -95,15 +95,23 @@ today_date = datetime.today().strftime('%Y-%m-%d')
 output_folder = r'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲'
 os.makedirs(output_folder, exist_ok=True)
 output_file = os.path.join(output_folder, f'{keyword}_{today_date}.xlsx')
-df = pd.DataFrame(job_data)
-# 拆分薪資欄位的函式
+df = pd.read_excel(r'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲\數據分析_2025-05-28.xlsx')
 def parse_salary(s):
     s = s.strip()
-    
+
     # 特殊值處理
-    if '面議' in s or '論件' in s:
+    if '面議' in s:
         return pd.Series({
-            'pay_type': '面議' if '面議' in s else '論件',
+            'pay_type': '面議',
+            'min_salary': 40000,
+            'max_salary': 40000,
+            'is_above_only': None,
+            'unit': '元',
+            'note': s
+        })
+    elif '論件' in s:
+        return pd.Series({
+            'pay_type': '論件',
             'min_salary': None,
             'max_salary': None,
             'is_above_only': None,
@@ -114,12 +122,16 @@ def parse_salary(s):
     # 薪資類型
     if '月薪' in s:
         pay_type = '月薪'
+        factor = 1
     elif '年薪' in s:
         pay_type = '年薪'
+        factor = 1 / 12  # 換算為月薪
     elif '時薪' in s:
         pay_type = '時薪'
+        factor = 1
     else:
         pay_type = '其他'
+        factor = 1
 
     # 拆出數字
     nums = list(map(int, re.findall(r'\d+', s.replace(',', ''))))
@@ -128,7 +140,7 @@ def parse_salary(s):
     if '以上' in s:
         return pd.Series({
             'pay_type': pay_type,
-            'min_salary': nums[0],
+            'min_salary': round(nums[0] * factor),
             'max_salary': None,
             'is_above_only': True,
             'unit': '元',
@@ -137,8 +149,8 @@ def parse_salary(s):
     elif len(nums) == 2:
         return pd.Series({
             'pay_type': pay_type,
-            'min_salary': nums[0],
-            'max_salary': nums[1],
+            'min_salary': round(nums[0] * factor),
+            'max_salary': round(nums[1] * factor),
             'is_above_only': False,
             'unit': '元',
             'note': ''
@@ -146,8 +158,8 @@ def parse_salary(s):
     elif len(nums) == 1:
         return pd.Series({
             'pay_type': pay_type,
-            'min_salary': nums[0],
-            'max_salary': nums[0],
+            'min_salary': round(nums[0] * factor),
+            'max_salary': round(nums[0] * factor),
             'is_above_only': False,
             'unit': '元',
             'note': ''
@@ -161,11 +173,8 @@ def parse_salary(s):
             'unit': '元',
             'note': s
         })
-
-# 套用到 df 上
+    
 salary_parsed = df['薪資'].apply(parse_salary)
 df = pd.concat([df, salary_parsed], axis=1)
 
-df.to_excel('ASD.xlsx',index=False)
-date_0  = datetime.now().strftime('%Y-%m-%d')
-df.to_csv(fr'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲\{date_0}_{keyword}.txt', index=False, header=False, encoding='utf-8')
+df.to_excel('數據分析_salary.xlsx',index=False)
