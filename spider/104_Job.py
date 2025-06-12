@@ -92,9 +92,12 @@ while area <= 6001002000:
 
 # **最後存 Excel**
 today_date = datetime.today().strftime('%Y-%m-%d')
-output_folder = r'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲'
+output_folder = r'C:\Users\11020964.TPTWKD\Desktop\python\python\104'
 os.makedirs(output_folder, exist_ok=True)
 output_file = os.path.join(output_folder, f'{keyword}_{today_date}.xlsx')
+df = pd.DataFrame(job_data)
+df.to_excel(output_file, index=False)
+
 df = pd.read_excel(r'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲\數據分析_2025-05-28.xlsx')
 def parse_salary(s):
     s = s.strip()
