@@ -17,7 +17,7 @@ def scrape_jobs():
     keyword = "對鍊"
     today_date = datetime.today().strftime('%Y-%m-%d')
 
-    output_folder = r'C:\Users\11020964.TPTWKD\Desktop\爬蟲\精品'
+    output_folder = r'C:'
     image_folder = os.path.join(output_folder, "images")
     os.makedirs(output_folder, exist_ok=True)
     os.makedirs(image_folder, exist_ok=True)

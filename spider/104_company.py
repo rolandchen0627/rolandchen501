@@ -86,7 +86,6 @@ while area <= 6001017000:  # 你可以根據需要調整範圍
 
 # **最後存 Excel**
 today_date = datetime.today().strftime('%Y-%m-%d')
-output_folder = r'C:\Users\11020964\Desktop\py\爬蟲'
 os.makedirs(output_folder, exist_ok=True)
 output_file = os.path.join(output_folder, f'{keyword}_{today_date}.xlsx')
 df = pd.DataFrame(job_data)

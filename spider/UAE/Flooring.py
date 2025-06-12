@@ -11,7 +11,7 @@ from openpyxl import Workbook
 from selenium.webdriver.common.keys import Keys
 
 
-keyword = "Interior Design"
+keyword = "Flooring"
 
 # 瀏覽器設定
 option = webdriver.ChromeOptions()
@@ -19,7 +19,7 @@ prefs = {"profile.default_content_setting_values": {"notifications": 2}}
 option.add_experimental_option("prefs", prefs)
 
 driver = webdriver.Chrome(service=Service(
-    executable_path="C:\\Users\\11020964\\Desktop\\python\\chromedriver.exe"), options=option)
+    executable_path="C:\\chromedriver.exe"), options=option)
 base_url = 'https://www.hidubai.com/'
 driver.get(base_url)
 
@@ -27,8 +27,8 @@ driver.get(base_url)
 WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
     (By.CSS_SELECTOR, 'input[placeholder="Find food, spas, companies, suppliers, ..."]'))).send_keys(keyword)
 WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
-    (By.CSS_SELECTOR, 'button[class="btn btn-default searchButton'))).click()
-excel_file = f"C:/Users/11020964/Desktop/py/爬蟲/UAE/{keyword}.xlsx"
+    (By.CSS_SELECTOR, 'button[class="btn btn-default searchButton"'))).click()
+excel_file = f"C:/Users/Desktop/py/爬蟲/UAE/{keyword}.xlsx"
 
 try:
     wb = openpyxl.load_workbook(excel_file)
@@ -114,13 +114,9 @@ import os
 import datetime
 
 
-# 設定無頭模式
 option = webdriver.ChromeOptions()
 option.add_argument('--headless')  # 啟用無頭模式
 
-
-driver = webdriver.Chrome(service=Service(
-    executable_path="C:\\Users\\11020964\\Desktop\\python\\chromedriver.exe"), options=option)
 
 try:
     wb = openpyxl.load_workbook(excel_file)
@@ -148,7 +144,6 @@ while ws[f'F{row}'].value:
     href_get.append(ws[f'F{row}'].value)
     row += 1  
 
-# 計時開始
 start_time = time.time()
 current_date = datetime.datetime.now().strftime('%Y%m%d')
 
@@ -229,19 +224,6 @@ for href in href_get:
     n = n + 1
     
 wb.save(excel_file)
-end_time = time.time()
-execution_time = end_time - start_time
-hours, rem = divmod(execution_time, 3600)
-minutes, seconds = divmod(rem, 60)
-save_path = r'Z:\28_數據中心部\爬蟲名單\加盟商\UAE'
-a = pd.read_excel(excel_file)
-data = a.drop_duplicates(subset=['Company_name'], keep='first', inplace=False)
 
-file_name = f'{current_date}_{keyword}_deduplication.xlsx'
-full_path = os.path.join(save_path, file_name)
-data.to_excel(full_path, index=False)
-
-print(f'檔案已儲存至: {full_path}')
-print(f'程式執行時間: {int(hours)} 小時 {int(minutes)} 分 {seconds:.2f} 秒')
 
 
