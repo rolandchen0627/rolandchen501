@@ -7,7 +7,7 @@ import os
 import pandas as pd
 import re
 
-keyword = '數據分析'
+keyword = '營運分析'
 area = 6001002000  # 初始地區
 job_data = []
 
@@ -96,9 +96,23 @@ output_folder = r'C:\Users\11020964.TPTWKD\Desktop\python\python\104'
 os.makedirs(output_folder, exist_ok=True)
 output_file = os.path.join(output_folder, f'{keyword}_{today_date}.xlsx')
 df = pd.DataFrame(job_data)
-df.to_excel(output_file, index=False)
+import re
 
-df = pd.read_excel(r'C:\Users\11020964.TPTWKD\Desktop\作品集\爬蟲\數據分析_2025-05-28.xlsx')
+# 定義函數，移除 Excel 不接受的字元（如 ASCII 控制字元）
+def clean_illegal_chars(value):
+    if isinstance(value, str):
+        # 刪除 ASCII 0~31 的控制字元，除了允許的換行符號 \n, \r, \t
+        return re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", value)
+    return value
+
+# 套用清理函數到整個 DataFrame
+df_cleaned = df.applymap(clean_illegal_chars)
+
+# 再嘗試寫入 Excel
+df_cleaned.to_excel(output_file, index=False)
+
+
+df_cleaned = pd.read_excel(r"C:\Users\11020964.TPTWKD\Desktop\python\python\104\營運分析_2025-06-19.xlsx")
 def parse_salary(s):
     s = s.strip()
 
